@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import MyLib.Menù;
 import MyLib.Utility;
+import MyLib.ServizioFile;
 
 
 public class Main {
@@ -23,8 +24,9 @@ public class Main {
 		final String SCELTACATEGORIA="Quale categoria vuoi vedere in dettaglio?";
 		final String SCELTACATEGORIAEVENTO="Quale categoria di evento vuoi creare?";
 		final String NOMEEVENTO="Nome evento: ";
+		final String path="C:\\Progetto\\Evento1";
 		
-		
+		File evento1 = new File(path);
 		
 		System.out.println(MSGBENVENUTO);
 		String utente= Utility.leggiStringa(MSGLOGIN);
@@ -79,6 +81,7 @@ public class Main {
 				evento.inserisciDettagliEvento();
 				
 				eventi.add(evento);
+				ServizioFile.salvaSingoloOggetto(evento1, eventi);
 				
 				
 			
@@ -89,6 +92,8 @@ public class Main {
 				
 			case 3:
 				// Visualizza i miei eventi
+				ServizioFile.caricaSingoloOggetto(evento1);
+				
 				for(int i=0; i<eventi.size();i++){
 					if(eventi.get(i).getCreatore().equals(utente)){
 						

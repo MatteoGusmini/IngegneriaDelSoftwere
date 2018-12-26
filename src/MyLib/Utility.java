@@ -1,5 +1,19 @@
 package MyLib;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.text.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,8 +26,12 @@ import java.util.Scanner;
 public class Utility 
 {
 	
-	final static String MSGERRORE="Il valore con cui evochi questa funzione non è accettabile";
-	final static String ERROREFORMATO="Il valore inserito non è del tipo richiesto";
+	private final static String MSGERRORE="Il valore con cui evochi questa funzione non è accettabile";
+	private final static String ERROREFORMATO="Il valore inserito non è del tipo richiesto";
+	private final static String MSG_NO_FILE = "ATTENZIONE: NON TROVO IL FILE ";
+	private final static String MSG_NO_LETTURA = "ATTENZIONE: PROBLEMI CON LA LETTURA DEL FILE ";
+	private final static String MSG_NO_SCRITTURA = "ATTENZIONE: PROBLEMI CON LA SCRITTURA DEL FILE ";
+	private final static String MSG_NO_CHIUSURA ="ATTENZIONE: PROBLEMI CON LA CHIUSURA DEL FILE ";
 	
 	static Scanner sc =new Scanner(System.in);
 
@@ -48,9 +66,6 @@ public class Utility
 	}	
 		
 		
-		
-		
-	
 	public static String leggiCodicefiscale(String msg)
 	{
 		String nome;
@@ -168,6 +183,7 @@ public class Utility
 		
 		return trovato;
 	}
+	
 	
 	
 	
