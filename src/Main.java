@@ -26,7 +26,7 @@ public class Main {
 		final String NOMEEVENTO="Nome evento: ";
 		final String path="C:\\Progetto\\Evento1";
 		
-		File evento1 = new File(path);
+		File evento1 = new File("eventi.txt");
 		
 		System.out.println(MSGBENVENUTO);
 		String utente= Utility.leggiStringa(MSGLOGIN);
@@ -34,9 +34,9 @@ public class Main {
 		
 		
 		ArrayList<Categoria> categorie=new ArrayList<>();
-		ArrayList<Evento> eventi=new ArrayList<>();
+		ListaEventi eventi=new ListaEventi();
 		
-			
+		eventi= (ListaEventi) ServizioFile.caricaSingoloOggetto(evento1);	
 		
 		
 		Partita partita= new Partita();
@@ -80,7 +80,8 @@ public class Main {
 				Evento evento= new Evento(partita,utente);
 				evento.inserisciDettagliEvento();
 				
-				eventi.add(evento);
+				eventi.getElencoEventi().add(evento);
+				
 				ServizioFile.salvaSingoloOggetto(evento1, eventi);
 				
 				
@@ -92,18 +93,19 @@ public class Main {
 				
 			case 3:
 				// Visualizza i miei eventi
-				ServizioFile.caricaSingoloOggetto(evento1);
 				
-				for(int i=0; i<eventi.size();i++){
-					if(eventi.get(i).getCreatore().equals(utente)){
+				for(int i=0; i<eventi.getElencoEventi().size();i++){
+					if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)){
 						
 					
-					System.out.println(i+1+")");
-					if (eventi.get(i).getCategoria().getTitolo().getValore().getInserito()){
-						System.out.println(NOMEEVENTO + eventi.get(i).getCategoria().getTitolo());	
+					System.out.println(i+1 +")");
+					if (eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getInserito()){
+						System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());	
 					}
-					System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
-					System.out.println(NOME + eventi.get(i).getCategoria().getNome());
+					else {
+						System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
+					}
+					System.out.println(NOME + eventi.getElencoEventi().get(i).getCategoria().getNome());
 					}
 				}
 				

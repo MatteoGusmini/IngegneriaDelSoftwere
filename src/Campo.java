@@ -1,9 +1,10 @@
 import java.util.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
 import MyLib.Utility;
 
-public class Campo {
+public class Campo implements Serializable{
 	
 	//Attributi
 	private String nome;

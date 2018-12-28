@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 import java.util.ArrayList;
 
 
-public class Categoria {
+public class Categoria implements Serializable{
 	
 	//Costanti
 	public static final int STRING = 0;

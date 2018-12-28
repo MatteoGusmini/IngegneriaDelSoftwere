@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Valore {
+public class Valore implements Serializable{
 	
 	//Attributi
 	private int tipo;

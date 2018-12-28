@@ -1,6 +1,8 @@
+import java.io.Serializable;
+
 import MyLib.Utility;
 
-public class Evento {
+public class Evento implements Serializable{
 	
 	//Attributi
 	private Categoria categoria;
