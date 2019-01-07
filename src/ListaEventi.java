@@ -5,6 +5,7 @@ public class ListaEventi implements Serializable {
 	
 	private ArrayList<Evento> elencoEventi = new ArrayList<>();
 	
+	
 	public ListaEventi()
 	{
 		

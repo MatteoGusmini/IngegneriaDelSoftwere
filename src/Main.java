@@ -23,10 +23,15 @@ public class Main {
 		final String DESCRIZIONE="Descrizione: ";
 		final String SCELTACATEGORIA="Quale categoria vuoi vedere in dettaglio?";
 		final String SCELTACATEGORIAEVENTO="Quale categoria di evento vuoi creare?";
+		final String SCELTAEVENTOPUBBLICAZIONE ="Quale evento vuoi pubblicare?";
 		final String NOMEEVENTO="Nome evento: ";
+		final String VALIDITAPUBBLICAZIONE = "L'evento selezionato è valido, è stato pubblicato ed è visibile sulla bacheca.";
+		final String NONVALIDITAPUBBLICAZIONE = "L'evento selezionato non è valido! Selezionare un altro evento. \n (Un Evento è valido solo se è stato assegnato un valore a tutti i campi obbligatori)";
+		final String BACHECAVUOTA = "Non vi sono eventi validi pubblicati.";
 		final String path="C:\\Progetto\\Evento1";
 		
 		File evento1 = new File("eventi.txt");
+		File eventiPubblicati = new File ("EventiPubblicati.txt");
 		
 		System.out.println(MSGBENVENUTO);
 		String utente= Utility.leggiStringa(MSGLOGIN);
@@ -35,8 +40,10 @@ public class Main {
 		
 		ArrayList<Categoria> categorie=new ArrayList<>();
 		ListaEventi eventi=new ListaEventi();
+		ListaEventi eventiValidi =new ListaEventi();
 		
-		eventi= (ListaEventi) ServizioFile.caricaSingoloOggetto(evento1);	
+		eventi= (ListaEventi) ServizioFile.caricaSingoloOggetto(evento1);
+		eventiValidi = (ListaEventi) ServizioFile.caricaSingoloOggetto(eventiPubblicati);
 		
 		
 		Partita partita= new Partita();
@@ -111,8 +118,46 @@ public class Main {
 				
 				break;
 			case 4:
+				// Pubblica eventi 
+				
+				for(int i=0; i<eventi.getElencoEventi().size();i++){
+					if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)){
+						
+					
+					System.out.println(i+1 +")");
+					if (eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getInserito()){
+						System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());	
+					}
+					else {
+						System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
+					}
+					System.out.println(NOME + eventi.getElencoEventi().get(i).getCategoria().getNome());
+					}
+				}
+				
+				int numEventoPubblicato=Utility.leggiIntero(1, eventi.getElencoEventi().size(), SCELTAEVENTOPUBBLICAZIONE);
+				
+				if(eventi.getElencoEventi().get(numEventoPubblicato).getValidità() == true){
+					System.out.println(VALIDITAPUBBLICAZIONE);
+					eventiValidi.getElencoEventi().add(eventi.getElencoEventi().get(numEventoPubblicato));
+					
+					ServizioFile.salvaSingoloOggetto(eventiPubblicati, eventiValidi);
+				}else
+					System.out.println(NONVALIDITAPUBBLICAZIONE);
+				
 				break;
 			case 5:
+				// Visualizza Bacheca
+				
+				if(eventiValidi.getElencoEventi().size() == 0){
+					System.out.println(BACHECAVUOTA);
+				}else{
+				for(int i=0; i<eventiValidi.getElencoEventi().size();i++){
+					System.out.println(i+1 +")");
+					System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());
+					System.out.println(NOME + eventiValidi.getElencoEventi().get(i).getCategoria().getNome());
+					}
+				}	
 				break;
 
 			}
