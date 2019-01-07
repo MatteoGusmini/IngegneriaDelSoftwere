@@ -142,6 +142,7 @@ public class Main {
 					eventiValidi.getElencoEventi().add(eventi.getElencoEventi().get(numEventoPubblicato));
 					
 					ServizioFile.salvaSingoloOggetto(eventiPubblicati, eventiValidi);
+					break;
 				}else
 					System.out.println(NONVALIDITAPUBBLICAZIONE);
 				
