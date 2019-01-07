@@ -135,7 +135,7 @@ public class Main {
 					}
 				}
 				
-				int numEventoPubblicato=Utility.leggiIntero(1, eventi.getElencoEventi().size(), SCELTAEVENTOPUBBLICAZIONE);
+				int numEventoPubblicato=Utility.leggiIntero(1, eventi.getElencoEventi().size()+ 1, SCELTAEVENTOPUBBLICAZIONE);
 				
 				if(eventi.getElencoEventi().get(numEventoPubblicato).getValidità() == true){
 					System.out.println(VALIDITAPUBBLICAZIONE);
