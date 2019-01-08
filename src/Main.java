@@ -124,9 +124,9 @@ public class Main {
 					if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)){
 						
 					
-					System.out.println(i+1 +")");
+					System.out.println(i +")");
 					if (eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getInserito()){
-						System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());	
+						System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore() );	
 					}
 					else {
 						System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
@@ -137,12 +137,14 @@ public class Main {
 				
 				int numEventoPubblicato=Utility.leggiIntero(1, eventi.getElencoEventi().size()+ 1, SCELTAEVENTOPUBBLICAZIONE);
 				
-				if(eventi.getElencoEventi().get(numEventoPubblicato).getValidità() == true){
+				Evento eventop = eventi.getElencoEventi().get(numEventoPubblicato);
+			
+				if(eventop.getValidità() == true){
 					System.out.println(VALIDITAPUBBLICAZIONE);
-					eventiValidi.getElencoEventi().add(eventi.getElencoEventi().get(numEventoPubblicato));
+					
+					eventiValidi.getElencoEventi().add(eventop);
 					
 					ServizioFile.salvaSingoloOggetto(eventiPubblicati, eventiValidi);
-					break;
 				}else
 					System.out.println(NONVALIDITAPUBBLICAZIONE);
 				
@@ -150,14 +152,15 @@ public class Main {
 			case 5:
 				// Visualizza Bacheca
 				
-				if(eventiValidi.getElencoEventi().size() == 0){
-					System.out.println(BACHECAVUOTA);
+				if(eventiValidi.getElencoEventi().size() != 0){
+					for(int i=0; i<eventiValidi.getElencoEventi().size();i++){
+						System.out.println(i+1 +")");
+						System.out.println(NOMEEVENTO + eventiValidi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());
+						System.out.println(NOME + eventiValidi.getElencoEventi().get(i).getCategoria().getNome());
+						}
+					
 				}else{
-				for(int i=0; i<eventiValidi.getElencoEventi().size();i++){
-					System.out.println(i+1 +")");
-					System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());
-					System.out.println(NOME + eventiValidi.getElencoEventi().get(i).getCategoria().getNome());
-					}
+					System.out.println(BACHECAVUOTA);
 				}	
 				break;
 

@@ -25,7 +25,7 @@ public class Evento implements Serializable{
 	public void isValido(){
 		validità=true;
 		
-		for (int i=0; i<categoria.getElencoCampi().size(); i++){
+		for (int i=0; i<categoria.getElencoCampi().size() + 1; i++){
 			if(categoria.getElencoCampi().get(i).getObbligatorio()&& !categoria.getElencoCampi().get(i).getValore().getInserito()){
 				validità=false;
 			}
