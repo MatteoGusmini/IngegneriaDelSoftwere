@@ -124,7 +124,7 @@ public class Main {
 				// Pubblica eventi 
 				
 				for(int i=0; i<eventi.getElencoEventi().size();i++){
-					if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)){
+					if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)&& !eventi.getElencoEventi().get(i).getInsBacheca()){
 						
 					
 					System.out.println(i +1 +")");

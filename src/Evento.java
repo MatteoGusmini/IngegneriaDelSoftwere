@@ -6,7 +6,8 @@ public class Evento implements Serializable{
 	
 	//Attributi
 	private Categoria categoria;
-	private Boolean validità= false;
+	private Boolean validità;
+	private Boolean insBacheca;
 	private String creatore;
 	
 	
@@ -14,6 +15,8 @@ public class Evento implements Serializable{
 	public Evento(Categoria _categoria, String _creatore){
 		categoria= _categoria;
 		creatore=_creatore;
+		validità = false;
+		insBacheca = false;
 	}
 	
 	
@@ -69,6 +72,20 @@ public class Evento implements Serializable{
 
 	public void setValidità(Boolean validità) {
 		this.validità = validità;
+	}
+	
+	
+
+
+
+	public Boolean getInsBacheca() {
+		return insBacheca;
+	}
+
+
+
+	public void setInsBacheca(Boolean insBacheca) {
+		this.insBacheca = insBacheca;
 	}
 
 
