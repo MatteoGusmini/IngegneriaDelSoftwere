@@ -223,17 +223,25 @@ public class Utility
 				return false;
 			}
 		}
+		int car1= (int )fOra[0];
+		int car2= (int )fOra[1];
+		int car3= (int )fOra[3];
+		int car4= (int )fOra[4];
+
+		
 		if(fOra.length != 5)
 			return false;
-		if(fOra[0] < 0 && fOra[0] > 2){
+		if( Character.getNumericValue(car1)< 0 && Character.getNumericValue(car1) > 2)
 			return false;
-		}if(fOra[0] == 2 && fOra[1] > 4){
+		if(Character.getNumericValue(car1) == 2 && Character.getNumericValue(car2) > 4)
 			return false;
-		}if(fOra[2] != ':' ){
+		if(fOra[2] != ':' )
 			return false;
-		}if(fOra[3] >= 6){
+		
+		if(Character.getNumericValue(car3) > 5)
 			return false;
-		}
+		
+		
 		return true;
 	}
 	
