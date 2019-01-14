@@ -45,9 +45,9 @@ public class Main {
 		ListaEventi bacheca = new ListaEventi();
 		
 		
-		eventi= (ListaEventi) ServizioFile.caricaSingoloOggetto(evento1);
+		//eventi= (ListaEventi) ServizioFile.caricaSingoloOggetto(evento1);
 	//	eventiValidi = (ListaEventi) ServizioFile.caricaSingoloOggetto(eventiPubblicati);
-		bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
+		//bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
 		
 		Partita partita= new Partita();
 		categorie.add(partita);
