@@ -1,4 +1,8 @@
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import MyLib.Utility;
 
@@ -7,8 +11,9 @@ public class Evento implements Serializable{
 	//Attributi
 	private Categoria categoria;
 	private Boolean validit‡;
-	private Boolean insBacheca;
 	private String creatore;
+	private ArrayList <String> elencoIscritti = new ArrayList<>();
+	private String stato;
 	
 	
 	//Costruttori
@@ -16,7 +21,7 @@ public class Evento implements Serializable{
 		categoria= _categoria;
 		creatore=_creatore;
 		validit‡ = false;
-		insBacheca = false;
+		stato= "Aperta";
 	}
 	
 	
@@ -41,8 +46,76 @@ public class Evento implements Serializable{
 	public void inserisciDettagliEvento()throws Exception{
 		categoria.inserisciCampi();
 	}
+	
+	
+	
+	
+	public Boolean gi‡Iscritto(String utente) {
+		Boolean iscritto= false;
+		
+		for(int i=0; i< elencoIscritti.size(); i++){
+			if (utente.equals(elencoIscritti.get(i))){
+				iscritto= true;
+			}
+		}
+		
+		
+		return iscritto;
+	}
+	
+	
+	public void controlloNPartecipanti(){
+		if (getPostiLiberi()==0){
+			stato= "Chiusa";
+		}
+	}
+	
+	public void controlloData(){
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = new Date();
+		
+		
+		if(categoria.getDataFine().getValore().getInserito()){
+			if( ((Date) categoria.getDataFine().getValore().getValore()).before(date)){
+				if (getPostiLiberi()==0){
+					stato= "Conclusa";
+				}
+				else{
+					stato="Fallit‡";
+				}
+			}
+		}
+		else{
+			if( ((Date) categoria.getData().getValore().getValore()).before(date)){
+				if (getPostiLiberi()==0){
+					stato= "Conclusa";
+				}
+				else{
+					stato="Fallit‡";
+				}
+			}
+		}
+		
+		
+		if( ((Date) categoria.getTermineIscrizione().getValore().getValore()).before(date)){
+			if (getPostiLiberi()!=0){
+				stato="Fallita";
+			}
+		}
+		
+		
+	}
+	
+	public int getPostiLiberi(){
+		return (int) categoria.getnPartecipanti().getValore().getValore()- elencoIscritti.size();
+	}
+	
+	
 
-
+	
+	
+	
+	
 
 	
 	// Getters and Setters generati automaticamente
@@ -50,11 +123,12 @@ public class Evento implements Serializable{
 		return categoria;
 	}
 
-
+	
 
 	public Boolean getValidit‡() {
 		return validit‡;
 	}
+
 
 
 
@@ -74,25 +148,36 @@ public class Evento implements Serializable{
 		this.validit‡ = validit‡;
 	}
 	
-		
-
-
-
-	public Boolean getInsBacheca() {
-		return insBacheca;
-	}
-
-
-
-	public void setInsBacheca(Boolean insBacheca) {
-		this.insBacheca = insBacheca;
-	}
-
 
 
 	public void setCreatore(String creatore) {
 		this.creatore = creatore;
 	}
+
+
+
+	public ArrayList<String> getElencoIscritti() {
+		return elencoIscritti;
+	}
+
+
+
+	public void setElencoIscritti(ArrayList<String> elencoIscritti) {
+		this.elencoIscritti = elencoIscritti;
+	}
+
+
+
+	public String getStato() {
+		return stato;
+	}
+
+
+
+	public void setStato(String stato) {
+		this.stato = stato;
+	}
+	
 	
 	
 	

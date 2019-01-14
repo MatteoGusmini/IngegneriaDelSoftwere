@@ -49,10 +49,12 @@ public class Campo implements Serializable{
 					break;
 				case 2: 
 					String data=Utility.leggiData("inserisci "+ nome+ "(gg/mm/aaaa)");
-					Date date=new SimpleDateFormat("dd/MM/yyyy").parse(data);	
+					Date date=new SimpleDateFormat("dd/MM/yyyy").parse(data);
+					valore.setValore(date);
 					break;
 				case 3:
-					String ora= Utility.leggiOra("Inserisci " + nome + "hh:mm");
+					String ora= Utility.leggiOra("Inserisci " + nome + " (hh:mm)");
+					valore.setValore(ora);
 					break;
 				}
 			}

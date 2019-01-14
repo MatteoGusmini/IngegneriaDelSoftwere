@@ -12,6 +12,14 @@ public class ListaEventi implements Serializable {
 	}
 	
 	
+	public void controlloEventi(){
+		for(int i=0; i<elencoEventi.size();i++){
+			elencoEventi.get(i).controlloNPartecipanti();
+			elencoEventi.get(i).controlloData();
+		}
+	}
+	
+	
 
 	public ArrayList<Evento> getElencoEventi() {
 		return elencoEventi;

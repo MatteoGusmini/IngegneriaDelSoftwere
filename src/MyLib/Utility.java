@@ -223,14 +223,13 @@ public class Utility
 				return false;
 			}
 		}
+		if(fOra.length != 5)
+			return false;
 		int car1= (int )fOra[0];
 		int car2= (int )fOra[1];
 		int car3= (int )fOra[3];
 		int car4= (int )fOra[4];
 
-		
-		if(fOra.length != 5)
-			return false;
 		if( Character.getNumericValue(car1)< 0 && Character.getNumericValue(car1) > 2)
 			return false;
 		if(Character.getNumericValue(car1) == 2 && Character.getNumericValue(car2) > 4)
