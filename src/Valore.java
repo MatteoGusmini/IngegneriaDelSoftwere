@@ -10,12 +10,13 @@ public class Valore implements Serializable{
 	private String testo;
 	private int numero;
 	private Date giorno;
-	private Boolean inserito=false;
+	private Boolean inserito;
 	
 	
 	//Costruttori
 	public Valore(int _tipo){
 		tipo=_tipo;
+		inserito= false;
 	}
 	
 	//Metodi

@@ -32,7 +32,8 @@ public class Campo implements Serializable{
 	// Metodo che inserisce assegna un valore al campo
 	public void inserisciValore()throws Exception{
 		
-	
+	if (!valore.getInserito()){
+		
 		if(!valore.getInserito()){
 			int inserimento= Utility.leggiIntero(0,1, "Vuoi inserire "+ nome+ "? Digita 1 per SI e 0 pre NO");
 			if(inserimento==0){
@@ -52,7 +53,9 @@ public class Campo implements Serializable{
 					break;
 				}
 			}
-		}	
+	
+		}
+	}
 	}
 	
 	
