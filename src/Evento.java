@@ -74,7 +74,7 @@ public class Evento implements Serializable{
 		this.validità = validità;
 	}
 	
-	
+		
 
 
 

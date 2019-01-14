@@ -33,6 +33,9 @@ public class Valore implements Serializable{
 			
 		case 2:
 			return giorno;
+		
+		case 3:
+			return testo;
 			
 		}
 		return tipo;

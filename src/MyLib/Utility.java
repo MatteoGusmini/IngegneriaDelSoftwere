@@ -53,17 +53,26 @@ public class Utility
 		do{
 			System.out.println(msg);
 			nome = sc.next();
+			valido = checkData(nome);
 			
-			try {
-				format.parse(nome);
-			} catch (ParseException e) {
-				System.out.println(nome + " non è nel formato richiesto "
-				+ ((SimpleDateFormat) format).toPattern());
-				valido=false;
-				}
 		}while(!valido);
 		return nome;
-	}	
+	}
+	
+	public static String leggiOra(String msg)
+	{
+		Boolean valido=true;
+		String nome;
+		
+		do{
+			System.out.println(msg);
+			nome = sc.next();
+			valido = checkOra(nome);
+			
+			
+		}while(!valido);
+		return nome;
+	}
 		
 		
 	public static String leggiCodicefiscale(String msg)
@@ -184,6 +193,49 @@ public class Utility
 		return trovato;
 	}
 	
+	public static boolean checkData(String dNascita){
+		boolean controlla=true;	//Variabile per capire se bisngna controllare o meno la stringa, il controllo si fa solo se i caratteri nella stringa sono tutti numeri o /, in caso contrario la stringa non ï¿½ una data accettabile
+		for(int i=0; i<dNascita.length();i++){
+			if(!MyCheck.checkNumero(dNascita.charAt(i)) && dNascita.charAt(i)!='/'){
+				controlla=false;
+			}
+		}
+		if(controlla){
+			MyTime.DATE_FORMAT.setLenient(false);
+			try {
+				MyTime.DATE_FORMAT.parse(dNascita);
+				return true;
+			} 
+			catch (ParseException e) {
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public static boolean checkOra(String ora){
+		
+		char[] fOra = ora.toCharArray();
+		for(int i=0; i<ora.length();i++){
+			if(!MyCheck.checkNumero(ora.charAt(i)) && ora.charAt(i)!=':'){
+				return false;
+			}
+		}
+		if(fOra.length != 5)
+			return false;
+		if(fOra[0] < 0 && fOra[0] > 2){
+			return false;
+		}if(fOra[0] == 2 && fOra[1] > 4){
+			return false;
+		}if(fOra[2] != ':' ){
+			return false;
+		}if(fOra[3] >= 6){
+			return false;
+		}
+		return true;
+	}
 	
 	
 	

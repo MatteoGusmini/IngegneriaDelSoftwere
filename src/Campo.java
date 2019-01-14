@@ -51,6 +51,9 @@ public class Campo implements Serializable{
 					String data=Utility.leggiData("inserisci "+ nome+ "(gg/mm/aaaa)");
 					Date date=new SimpleDateFormat("dd/MM/yyyy").parse(data);	
 					break;
+				case 3:
+					String ora= Utility.leggiOra("Inserisci " + nome + "hh:mm");
+					break;
 				}
 			}
 	
