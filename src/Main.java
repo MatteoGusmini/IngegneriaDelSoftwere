@@ -21,14 +21,18 @@ public class Main {
 		final String MSGBENVENUTO="Benvenuto nella social di gestione eventi";
 		final String MSGLOGIN="Inserisci il tuo nome utente per effettuare il login";
 		final String NOMEMENU="GESTIONE Eventi";
-		final String[] OPZIONI={"Visualizza Categorie Disponibili","Crea un nuovo evento","Visualizza i miei eventi non ancora pubblicati","Pubblica eventi","Visualizza Bacheca","Partecipa a evento"};
+		final String NOMEMENUMSG="GESTIONE Messaggi";
+		final String[] OPZIONIMSG={"Visualizza messaggi", "Elimina messaggi"};
+		final String[] OPZIONI={"Visualizza Categorie Disponibili","Crea un nuovo evento","Visualizza i miei eventi non ancora pubblicati","Pubblica eventi","Visualizza Bacheca","Partecipa a evento","Gestione Messaggi"};
 		final String NOME="Nome categoria: ";
 		final String STATO="Stato: ";
+		final String POSTILIBERI="Posti liberi: ";
 		final String DESCRIZIONE="Descrizione: ";
 		final String SCELTACATEGORIA="Quale categoria vuoi vedere in dettaglio?";
 		final String SCELTACATEGORIAEVENTO="Quale categoria di evento vuoi creare?";
 		final String SCELTAISCEVENTO="A quale evento desideri iscriverti?";
 		final String SCELTAEVENTOPUBBLICAZIONE ="Quale evento vuoi pubblicare?";
+		final String SCELTAMSG ="Quale messaggio vuoi eliminare?";
 		final String NOMEEVENTO="Nome evento: ";
 		final String VALIDITAPUBBLICAZIONE = "L'evento selezionato è valido, è stato pubblicato ed è visibile sulla bacheca.";
 		final String NONVALIDITAPUBBLICAZIONE = "L'evento selezionato non è valido! Selezionare un altro evento. \n (Un Evento è valido solo se è stato assegnato un valore a tutti i campi obbligatori)";
@@ -39,32 +43,32 @@ public class Main {
 		// Creazione file per il salvataggio dei dati
 		File evento1 = new File("eventi.txt");
 		File filebacheca = new File ("Bacheca.txt");
+		File filemessaggi = new File ("Messaggi.txt");
 		
 		
-		
+		// Messaggio di benvenuto e richiesta nome per login
 		System.out.println(MSGBENVENUTO);
 		String utente= Utility.leggiStringa(MSGLOGIN);
 	
 		
 		
+		// Creazione degli oggetti principali per l'esecuzione del programma
+		ArrayList<Messaggio> messaggi=new ArrayList<>();
 		ArrayList<Categoria> categorie=new ArrayList<>();
 		ListaEventi eventi=new ListaEventi();
-		ListaEventi eventiValidi =new ListaEventi();
 		ListaEventi bacheca = new ListaEventi();
-		
-		
 		
 		
 		
 		
 		// Caricamento dati del programma
 		eventi= (ListaEventi) ServizioFile.caricaSingoloOggetto(evento1);
-		//bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
+		bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
+		messaggi= (ArrayList<Messaggio>) ServizioFile.caricaSingoloOggetto(filebacheca);
 				
 
 	
-		
-		
+		// Creazione delle categorie di cui possono essere i vari eventi
 		Partita partita= new Partita();
 		categorie.add(partita);
 		
@@ -76,9 +80,22 @@ public class Main {
 		do{
 			scelta=myMenu.scegli();
 			
-			// Controlli su eventi in Bacheca
+			// Controlli su eventi in Bacheca e generazione di eventuali messaggi
 			
-			//bacheca.controlloEventi();
+			ArrayList<Messaggio> messaggiStato = new ArrayList<>(bacheca.controlloEventi());
+			for(int i=0;i<messaggiStato.size();i++){
+				messaggi.add(messaggiStato.get(i));
+			}
+			ServizioFile.salvaSingoloOggetto(filemessaggi, messaggi);
+			
+			
+			// Eliminazione eventi Falliti
+			for(int i=0; i< bacheca.getElencoEventi().size();i++){
+				if(bacheca.getElencoEventi().get(i).getStato().equalsIgnoreCase("Fallita")){
+					bacheca.getElencoEventi().remove(i);
+				}
+			}
+			
 			
 			
 			switch(scelta)
@@ -101,6 +118,9 @@ public class Main {
 				break;
 			case 2:
 				// Crea nuovo evento
+				
+				
+				// Elnco delle categorie a cui può appartenere l'evento
 				for(int i=0; i<categorie.size();i++){
 					System.out.println(i+1+")");
 					System.out.println(NOME + categorie.get(i).getNome());
@@ -109,12 +129,14 @@ public class Main {
 				
 				int numCatEvento=Utility.leggiIntero(1, categorie.size()+1, SCELTACATEGORIAEVENTO);
 				
+				// Richiesta inserimento dettaglio eventi
 				Evento evento= new Evento(partita,utente);
 				evento.inserisciDettagliEvento();
 				
 				eventi.getElencoEventi().add(evento);
 				evento.getElencoIscritti().add(utente);
 				
+				// Salvataggio eventi
 				ServizioFile.salvaSingoloOggetto(evento1, eventi);
 				
 				
@@ -145,6 +167,8 @@ public class Main {
 				break;
 			case 4:
 				// Pubblica eventi 
+				
+				// Visualizza i propri eventi non ancora inseriti
 				System.out.println("0) Esci");	
 					for(int i=0; i<eventi.getElencoEventi().size();i++){
 						if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)){
@@ -161,17 +185,20 @@ public class Main {
 						}
 					}
 				
+				
 				int numEventoPubblicato=Utility.leggiIntero(0, eventi.getElencoEventi().size(), SCELTAEVENTOPUBBLICAZIONE);
+				
 				
 				if(numEventoPubblicato!=0){
 				
 					Evento eventop = eventi.getElencoEventi().get(numEventoPubblicato -1);
 					
 					eventop.isValido();
-				
+				// Controllo validità evento
 					if(eventop.getValidità() == true){
 						System.out.println(VALIDITAPUBBLICAZIONE);
 						
+						// Pubblicazione evento
 						bacheca.getElencoEventi().add(eventop);
 						eventi.getElencoEventi().remove(numEventoPubblicato-1);
 						
@@ -181,8 +208,10 @@ public class Main {
 					}
 					else{
 						
-					
+					    // Evento non valido
 						System.out.println(NONVALIDITAPUBBLICAZIONE);
+						
+						// Possibilità di inserire altri dettagli all'evento
 						int inserimento= Utility.leggiIntero(0,1, "Vuoi inserire completare l'evento? Digita 1 per SI e 0 pre NO");
 						if (inserimento==1){
 							eventop.inserisciDettagliEvento();
@@ -202,6 +231,7 @@ public class Main {
 						System.out.println(NOMEEVENTO + bacheca.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());
 						System.out.println(NOME + bacheca.getElencoEventi().get(i).getCategoria().getNome());
 						System.out.println(STATO + bacheca.getElencoEventi().get(i).getStato());
+						System.out.println(POSTILIBERI + bacheca.getElencoEventi().get(i).getPostiLiberi());
 						}
 					
 				}else{
@@ -221,6 +251,7 @@ public class Main {
 							System.out.println(i+1 +")");
 							System.out.println(NOMEEVENTO + bacheca.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());
 							System.out.println(NOME + bacheca.getElencoEventi().get(i).getCategoria().getNome());
+							System.out.println(POSTILIBERI + bacheca.getElencoEventi().get(i).getPostiLiberi());
 						}
 					
 					}
@@ -240,6 +271,64 @@ public class Main {
 				ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
 				
 			
+				break;
+				
+			case 7:
+				// Visualiza i miei messaggi
+				Menù Menumsg= new Menù(NOMEMENUMSG,OPZIONIMSG);
+				int sceltamsg;
+				
+					do{
+						sceltamsg=Menumsg.scegli();
+						
+						switch(sceltamsg)
+						{
+						case 0:
+							break;
+							
+						case 1:
+							// Visualzza i miei messaggi
+							for(int i=0; i<messaggi.size();i++){
+								if(messaggi.get(i).getDestinatario().equals(utente)){
+									
+								System.out.println(i+1 +")");
+								System.out.println(messaggi.get(i).getTesto());
+								}
+							}
+							break;
+						
+						case 2:
+							
+							System.out.println("0) Esci");
+							for(int i=0; i<messaggi.size();i++){
+								if(messaggi.get(i).getDestinatario().equals(utente)){
+									
+								System.out.println(i+1 +")");
+								System.out.println(messaggi.get(i).getTesto());
+								}
+							}
+							
+							int numMsg=Utility.leggiIntero(0, messaggi.size(), SCELTAMSG);
+							
+							
+							if(numMsg!=0){
+								messaggi.remove(numMsg-1);
+									
+								ServizioFile.salvaSingoloOggetto(filemessaggi, messaggi);
+							}
+							
+						
+							
+							break;
+						
+						
+						}
+							
+						
+					}while(sceltamsg !=0);
+					
+				
+				
 				break;
 
 			}

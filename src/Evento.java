@@ -8,6 +8,12 @@ import MyLib.Utility;
 
 public class Evento implements Serializable{
 	
+	
+	
+	final String[] TESTOCHIUSURA={"L'evento "," ha raggiunto un numero sufficiente di iscrizioni e si terra dunque in data "," alle ore "," presso ",". Si ricorda che Ë necessatrio versare la quota di iscrizione di "," Euro."};
+	final String[] TESTOFALLITO={"L'evento "," NON ha raggiunto un numero sufficiente di iscrizioni ed Ë quindi stato cancellato."};
+	
+	
 	//Attributi
 	private Categoria categoria;
 	private Boolean validit‡;
@@ -49,7 +55,7 @@ public class Evento implements Serializable{
 	
 	
 	
-	
+	// Metodo che controlla se un utente Ë gi‡ iscritto ad un evento
 	public Boolean gi‡Iscritto(String utente) {
 		Boolean iscritto= false;
 		
@@ -63,16 +69,34 @@ public class Evento implements Serializable{
 		return iscritto;
 	}
 	
-	
-	public void controlloNPartecipanti(){
-		if (getPostiLiberi()==0){
+	// Metodo che controlla se il numero di partecipanti di un evento ha raggiunto il limite e se Ë vero genere i messaggi
+	public ArrayList<Messaggio> controlloNPartecipanti(){
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
+		
+		if (getPostiLiberi()==0 && stato.equalsIgnoreCase("Aperta")){
 			stato= "Chiusa";
+			for (int i=0;i< elencoIscritti.size();i++){
+				
+				String nomeUtente= elencoIscritti.get(i);
+				String testo= TESTOCHIUSURA[0] +categoria.getTitolo().getValore().getValore() + TESTOCHIUSURA[1] + dateFormat.format(categoria.getData().getValore().getValore())+ TESTOCHIUSURA[2] + categoria.getOra().getValore().getValore()+ TESTOCHIUSURA[3] + categoria.getLuogo().getValore().getValore() +TESTOCHIUSURA[4] + categoria.getQuotaIndividuale().getValore().getValore()+ TESTOCHIUSURA[5];                               	
+				Messaggio msg =new Messaggio(nomeUtente,testo);
+				
+				messaggiStato.add(msg);
+	
+			}
+		
 		}
+		
+		return messaggiStato;
+		
 	}
 	
-	public void controlloData(){
+	// Metodo che controlla se si Ë superata la dta di termine iscrizione o quella di svolgimento dell'evento
+	public ArrayList<Messaggio> controlloData(){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+		Date date = new Date("11/11/2020");
+		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
 		
 		
 		if(categoria.getDataFine().getValore().getInserito()){
@@ -98,14 +122,24 @@ public class Evento implements Serializable{
 		
 		
 		if( ((Date) categoria.getTermineIscrizione().getValore().getValore()).before(date)){
-			if (getPostiLiberi()!=0){
+			if (getPostiLiberi()!=0 && stato.equalsIgnoreCase("Aperta")){
 				stato="Fallita";
+				
+				for (int i=0;i< elencoIscritti.size();i++){
+					String nomeUtente= elencoIscritti.get(i);
+					String testo= TESTOFALLITO[0] +categoria.getTitolo().getValore().getValore() + TESTOFALLITO[1]; 
+					Messaggio msg =new Messaggio(nomeUtente,testo);
+					messaggiStato.add(msg);
+				}
 			}
 		}
 		
 		
+		return messaggiStato;
 	}
 	
+	
+	// Metodo che ritorna il numero di posti liberi di un evento
 	public int getPostiLiberi(){
 		return (int) categoria.getnPartecipanti().getValore().getValore()- elencoIscritti.size();
 	}
