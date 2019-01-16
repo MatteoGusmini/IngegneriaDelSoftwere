@@ -9,7 +9,7 @@ public class ListaEventi implements Serializable {
 	public ListaEventi()
 	{
 		
-	}
+	} 
 	
 	 
 	// Metodo per il controllo degli eventi
