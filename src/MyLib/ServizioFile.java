@@ -1,5 +1,6 @@
 package MyLib;
 import java.io.*;
+import java.util.ArrayList;
 
 public class ServizioFile{
 	private final static String MSG_NO_FILE = "ATTENZIONE: NON TROVO IL FILE ";
@@ -150,5 +151,7 @@ public class ServizioFile{
 	    if (!success)
 	      throw new IllegalArgumentException("Cancellazione fallita");
 	  }
+	
+
 }
 

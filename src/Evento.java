@@ -17,13 +17,13 @@ public class Evento implements Serializable{
 	//Attributi
 	private Categoria categoria;
 	private Boolean validit‡;
-	private String creatore;
-	private ArrayList <String> elencoIscritti = new ArrayList<>();
+	private Utente creatore;
+	private ArrayList <Utente> elencoIscritti = new ArrayList<>();
 	private String stato;
 	
 	
 	//Costruttori
-	public Evento(Categoria _categoria, String _creatore){
+	public Evento(Categoria _categoria, Utente _creatore){
 		categoria= _categoria;
 		creatore=_creatore;
 		validit‡ = false;
@@ -56,7 +56,7 @@ public class Evento implements Serializable{
 	
 	
 	// Metodo che controlla se un utente Ë gi‡ iscritto ad un evento
-	public Boolean gi‡Iscritto(String utente) {
+	public Boolean gi‡Iscritto(Utente utente) {
 		Boolean iscritto= false;
 		
 		for(int i=0; i< elencoIscritti.size(); i++){
@@ -78,7 +78,7 @@ public class Evento implements Serializable{
 			stato= "Chiusa";
 			for (int i=0;i< elencoIscritti.size();i++){
 				
-				String nomeUtente= elencoIscritti.get(i);
+				Utente nomeUtente= elencoIscritti.get(i);
 				String testo= TESTOCHIUSURA[0] +categoria.getTitolo().getValore().getValore() + TESTOCHIUSURA[1] + dateFormat.format(categoria.getData().getValore().getValore())+ TESTOCHIUSURA[2] + categoria.getOra().getValore().getValore()+ TESTOCHIUSURA[3] + categoria.getLuogo().getValore().getValore() +TESTOCHIUSURA[4] + categoria.getQuotaIndividuale().getValore().getValore()+ TESTOCHIUSURA[5];                               	
 				Messaggio msg =new Messaggio(nomeUtente,testo);
 				
@@ -95,7 +95,7 @@ public class Evento implements Serializable{
 	// Metodo che controlla se si Ë superata la dta di termine iscrizione o quella di svolgimento dell'evento
 	public ArrayList<Messaggio> controlloData(){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date("11/11/2020");
+		Date date = new Date();
 		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
 		
 		
@@ -126,7 +126,7 @@ public class Evento implements Serializable{
 				stato="Fallita";
 				
 				for (int i=0;i< elencoIscritti.size();i++){
-					String nomeUtente= elencoIscritti.get(i);
+					Utente nomeUtente= elencoIscritti.get(i);
 					String testo= TESTOFALLITO[0] +categoria.getTitolo().getValore().getValore() + TESTOFALLITO[1]; 
 					Messaggio msg =new Messaggio(nomeUtente,testo);
 					messaggiStato.add(msg);
@@ -166,7 +166,7 @@ public class Evento implements Serializable{
 
 
 
-	public String getCreatore() {
+	public Utente getCreatore() {
 		return creatore;
 	}
 
@@ -184,19 +184,19 @@ public class Evento implements Serializable{
 	
 
 
-	public void setCreatore(String creatore) {
+	public void setCreatore(Utente creatore) {
 		this.creatore = creatore;
 	}
 
 
 
-	public ArrayList<String> getElencoIscritti() {
+	public ArrayList<Utente> getElencoIscritti() {
 		return elencoIscritti;
 	}
 
 
 
-	public void setElencoIscritti(ArrayList<String> elencoIscritti) {
+	public void setElencoIscritti(ArrayList<Utente> elencoIscritti) {
 		this.elencoIscritti = elencoIscritti;
 	}
 

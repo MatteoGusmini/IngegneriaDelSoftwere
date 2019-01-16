@@ -4,16 +4,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 import MyLib.Menù;
-import MyLib.Utility;
 import MyLib.ServizioFile;
+import MyLib.Utility;
+
 
 
 public class Main {
 
 	public static void main(String[] args) throws Exception{
-		
 	
 		
 		// Costanti che contengono i messaggi da visualizzare in Output
@@ -37,36 +38,52 @@ public class Main {
 		final String VALIDITAPUBBLICAZIONE = "L'evento selezionato è valido, è stato pubblicato ed è visibile sulla bacheca.";
 		final String NONVALIDITAPUBBLICAZIONE = "L'evento selezionato non è valido! Selezionare un altro evento. \n (Un Evento è valido solo se è stato assegnato un valore a tutti i campi obbligatori)";
 		final String BACHECAVUOTA = "Non vi sono eventi validi pubblicati.";
+		final String EVENTIVUOTI = "Non ci sono eventi creati e non acora pubblicati in bacheca.";
+		final String MESSAGGIVUOTI = "Non ci sono messaggi.";
 		final String path="C:\\Progetto\\Evento1";
 		
 		
 		// Creazione file per il salvataggio dei dati
-		File evento1 = new File("eventi.txt");
 		File filebacheca = new File ("Bacheca.txt");
-		File filemessaggi = new File ("Messaggi.txt");
+		File fileutenti = new File ("Utenti.txt");
 		
-		
-		// Messaggio di benvenuto e richiesta nome per login
-		System.out.println(MSGBENVENUTO);
-		String utente= Utility.leggiStringa(MSGLOGIN);
-	
 		
 		
 		// Creazione degli oggetti principali per l'esecuzione del programma
-		ArrayList<Messaggio> messaggi=new ArrayList<>();
 		ArrayList<Categoria> categorie=new ArrayList<>();
-		ListaEventi eventi=new ListaEventi();
 		ListaEventi bacheca = new ListaEventi();
+		ArrayList<Utente> elencoUtenti=new ArrayList<>();
 		
 		
 		
 		
 		// Caricamento dati del programma
-		eventi= (ListaEventi) ServizioFile.caricaSingoloOggetto(evento1);
 		bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
-		messaggi= (ArrayList<Messaggio>) ServizioFile.caricaSingoloOggetto(filebacheca);
-				
-
+		elencoUtenti=  (ArrayList<Utente>) ServizioFile.caricaSingoloOggetto(fileutenti);
+		
+		
+		
+		// Messaggio di benvenuto e richiesta nome per login
+		System.out.println(MSGBENVENUTO);
+		String utente= Utility.leggiStringa(MSGLOGIN);
+		
+		
+		// Controllo se utente già esistente 
+		Boolean esistente =false;
+		int numUtente=0;
+		for(int i=0; i<elencoUtenti.size();i++){
+			if (elencoUtenti.get(i).getNomeUtente().equalsIgnoreCase(utente)){
+				esistente =true;
+				numUtente=i;
+			}	
+		}
+		// Se non esiste ne creo uno nuovo
+		if (!esistente){
+			Utente nuovoUtente= new Utente(utente);
+			elencoUtenti.add(nuovoUtente);
+			numUtente=elencoUtenti.size()-1;
+		}
+		ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 	
 		// Creazione delle categorie di cui possono essere i vari eventi
 		Partita partita= new Partita();
@@ -84,9 +101,13 @@ public class Main {
 			
 			ArrayList<Messaggio> messaggiStato = new ArrayList<>(bacheca.controlloEventi());
 			for(int i=0;i<messaggiStato.size();i++){
-				messaggi.add(messaggiStato.get(i));
+				for(int j=0; j<elencoUtenti.size();j++){
+					if(messaggiStato.get(i).getDestinatario().equals(elencoUtenti.get(j))){
+						elencoUtenti.get(j).getMessaggiUtente().add(messaggiStato.get(i));
+					}
+				}
 			}
-			ServizioFile.salvaSingoloOggetto(filemessaggi, messaggi);
+			ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 			
 			
 			// Eliminazione eventi Falliti
@@ -96,7 +117,7 @@ public class Main {
 				}
 			}
 			
-			
+			ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
 			
 			switch(scelta)
 			{
@@ -130,14 +151,16 @@ public class Main {
 				int numCatEvento=Utility.leggiIntero(1, categorie.size()+1, SCELTACATEGORIAEVENTO);
 				
 				// Richiesta inserimento dettaglio eventi
-				Evento evento= new Evento(partita,utente);
+				
+				Evento evento= new Evento(partita,elencoUtenti.get(numUtente));
 				evento.inserisciDettagliEvento();
 				
-				eventi.getElencoEventi().add(evento);
-				evento.getElencoIscritti().add(utente);
+				evento.getElencoIscritti().add(elencoUtenti.get(numUtente));
+				elencoUtenti.get(numUtente).getEventiUtente().add(evento);
 				
-				// Salvataggio eventi
-				ServizioFile.salvaSingoloOggetto(evento1, eventi);
+				
+				// Salvataggio file
+				ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 				
 				
 			
@@ -148,79 +171,75 @@ public class Main {
 				
 			case 3:
 				// Visualizza i miei eventi non pubblicati
-				
-				for(int i=0; i<eventi.getElencoEventi().size();i++){
-					if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)){
-						
-					
-					System.out.println(i+1 +")");
-					if (eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getInserito()){
-						System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());	
+				if(elencoUtenti.get(numUtente).getEventiUtente().size()!=0){
+					for(int i=0; i<elencoUtenti.get(numUtente).getEventiUtente().size();i++){
+						System.out.println(i+1 +")");
+						if (elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getInserito()){
+							System.out.println(NOMEEVENTO + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getValore());	
+						}
+						else {
+							System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
+						}
+						System.out.println(NOME + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getNome());
 					}
-					else {
-						System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
-					}
-					System.out.println(NOME + eventi.getElencoEventi().get(i).getCategoria().getNome());
-					}
+				}else {
+					System.out.println(EVENTIVUOTI);
 				}
-				
 				break;
 			case 4:
 				// Pubblica eventi 
 				
 				// Visualizza i propri eventi non ancora inseriti
-				System.out.println("0) Esci");	
-					for(int i=0; i<eventi.getElencoEventi().size();i++){
-						if(eventi.getElencoEventi().get(i).getCreatore().equals(utente)){
-							
-						
-						System.out.println(i +1 +")");
-						if (eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getInserito()){
-							System.out.println(NOMEEVENTO + eventi.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore() );	
+				if(elencoUtenti.get(numUtente).getEventiUtente().size()!=0){
+					System.out.println("0) Esci");	
+						for(int i=0; i<elencoUtenti.get(numUtente).getEventiUtente().size();i++){
+							System.out.println(i +1 +")");
+							if (elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getInserito()){
+								System.out.println(NOMEEVENTO + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getValore() );	
+							}
+							else {
+								System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
+							}
+							System.out.println(NOME + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getNome());
 						}
-						else {
-							System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
-						}
-						System.out.println(NOME + eventi.getElencoEventi().get(i).getCategoria().getNome());
-						}
-					}
-				
-				
-				int numEventoPubblicato=Utility.leggiIntero(0, eventi.getElencoEventi().size(), SCELTAEVENTOPUBBLICAZIONE);
-				
-				
-				if(numEventoPubblicato!=0){
-				
-					Evento eventop = eventi.getElencoEventi().get(numEventoPubblicato -1);
 					
-					eventop.isValido();
-				// Controllo validità evento
-					if(eventop.getValidità() == true){
-						System.out.println(VALIDITAPUBBLICAZIONE);
+					
+					int numEventoPubblicato=Utility.leggiIntero(0, elencoUtenti.get(numUtente).getEventiUtente().size(), SCELTAEVENTOPUBBLICAZIONE);
+					
+					
+					if(numEventoPubblicato!=0){
+					
+						Evento eventop = elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1);
 						
-						// Pubblicazione evento
-						bacheca.getElencoEventi().add(eventop);
-						eventi.getElencoEventi().remove(numEventoPubblicato-1);
-						
-						
-						ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
-						ServizioFile.salvaSingoloOggetto(evento1, eventi);
-					}
-					else{
-						
-					    // Evento non valido
-						System.out.println(NONVALIDITAPUBBLICAZIONE);
-						
-						// Possibilità di inserire altri dettagli all'evento
-						int inserimento= Utility.leggiIntero(0,1, "Vuoi inserire completare l'evento? Digita 1 per SI e 0 pre NO");
-						if (inserimento==1){
-							eventop.inserisciDettagliEvento();
+						eventop.isValido();
+					// Controllo validità evento
+						if(eventop.getValidità() == true){
+							System.out.println(VALIDITAPUBBLICAZIONE);
+							
+							// Pubblicazione evento
+							bacheca.getElencoEventi().add(eventop);
+							elencoUtenti.get(numUtente).getEventiUtente().remove(numEventoPubblicato-1);
 						}
-						ServizioFile.salvaSingoloOggetto(evento1, eventi);
+						else{
+							
+						    // Evento non valido
+							System.out.println(NONVALIDITAPUBBLICAZIONE);
+							
+							// Possibilità di inserire altri dettagli all'evento
+							int inserimento= Utility.leggiIntero(0,1, "Vuoi inserire completare l'evento? Digita 1 per SI e 0 pre NO");
+							if (inserimento==1){
+								eventop.inserisciDettagliEvento();
+							}					
+						}
+						
+						ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 						ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
 					}
-				
+				}else {
+					System.out.println(EVENTIVUOTI);
 				}
+				
+				
 				break;
 			case 5:
 				// Visualizza Bacheca
@@ -247,7 +266,7 @@ public class Main {
 					System.out.println("0) Esci");
 					for(int i=0; i<bacheca.getElencoEventi().size();i++){
 						
-						if(!bacheca.getElencoEventi().get(i).giàIscritto(utente)&& bacheca.getElencoEventi().get(i).getStato().equalsIgnoreCase("Aperta")){						
+						if(!bacheca.getElencoEventi().get(i).giàIscritto(elencoUtenti.get(numUtente))&& bacheca.getElencoEventi().get(i).getStato().equalsIgnoreCase("Aperta")){						
 							System.out.println(i+1 +")");
 							System.out.println(NOMEEVENTO + bacheca.getElencoEventi().get(i).getCategoria().getTitolo().getValore().getValore());
 							System.out.println(NOME + bacheca.getElencoEventi().get(i).getCategoria().getNome());
@@ -258,7 +277,7 @@ public class Main {
 					int numIscEvento=Utility.leggiIntero(0, categorie.size()+1, SCELTAISCEVENTO);
 					
 					if (numIscEvento!=0){
-						bacheca.getElencoEventi().get(numIscEvento-1).getElencoIscritti().add(utente);
+						bacheca.getElencoEventi().get(numIscEvento-1).getElencoIscritti().add(elencoUtenti.get(numUtente));
 					}
 					
 				}else{
@@ -267,7 +286,7 @@ public class Main {
 				
 				
 				
-				ServizioFile.salvaSingoloOggetto(evento1, eventi);
+				ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 				ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
 				
 			
@@ -283,51 +302,46 @@ public class Main {
 						
 						switch(sceltamsg)
 						{
-						case 0:
-							break;
-							
-						case 1:
-							// Visualzza i miei messaggi
-							for(int i=0; i<messaggi.size();i++){
-								if(messaggi.get(i).getDestinatario().equals(utente)){
+							case 0:
+								break;
+								
+							case 1:
+								// Visualzza i miei messaggi
+								
+								if(elencoUtenti.get(numUtente).getMessaggiUtente().size()!=0){
 									
-								System.out.println(i+1 +")");
-								System.out.println(messaggi.get(i).getTesto());
+									for(int i=0; i<elencoUtenti.get(numUtente).getMessaggiUtente().size();i++){	
+										System.out.println(i+1 +")");
+										System.out.println(elencoUtenti.get(numUtente).getMessaggiUtente().get(i).getTesto());
+									}
+								}else {
+									System.out.println(MESSAGGIVUOTI);
 								}
-							}
-							break;
-						
-						case 2:
+								break;
 							
-							System.out.println("0) Esci");
-							for(int i=0; i<messaggi.size();i++){
-								if(messaggi.get(i).getDestinatario().equals(utente)){
+							case 2:
+								
+								if(elencoUtenti.get(numUtente).getMessaggiUtente().size()!=0){
+									System.out.println("0) Esci");
+									for(int i=0; i<elencoUtenti.get(numUtente).getMessaggiUtente().size();i++){
+										System.out.println(i+1 +")");
+										System.out.println(elencoUtenti.get(numUtente).getMessaggiUtente().get(i).getTesto());
+									}
 									
-								System.out.println(i+1 +")");
-								System.out.println(messaggi.get(i).getTesto());
+									int numMsg=Utility.leggiIntero(0, elencoUtenti.get(numUtente).getMessaggiUtente().size(), SCELTAMSG);
+									
+									
+									if(numMsg!=0){
+										elencoUtenti.get(numUtente).getMessaggiUtente().remove(numMsg-1);
+											
+										ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
+									}
+								}else {
+									System.out.println(MESSAGGIVUOTI);
 								}
-							}
-							
-							int numMsg=Utility.leggiIntero(0, messaggi.size(), SCELTAMSG);
-							
-							
-							if(numMsg!=0){
-								messaggi.remove(numMsg-1);
-									
-								ServizioFile.salvaSingoloOggetto(filemessaggi, messaggi);
-							}
-							
-						
-							
-							break;
-						
-						
+								break;
 						}
-							
-						
 					}while(sceltamsg !=0);
-					
-				
 				
 				break;
 
