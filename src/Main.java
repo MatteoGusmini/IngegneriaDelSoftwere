@@ -102,7 +102,7 @@ public class Main {
 			ArrayList<Messaggio> messaggiStato = new ArrayList<>(bacheca.controlloEventi());
 			for(int i=0;i<messaggiStato.size();i++){
 				for(int j=0; j<elencoUtenti.size();j++){
-					if(messaggiStato.get(i).getDestinatario().equals(elencoUtenti.get(j))){
+					if(messaggiStato.get(i).getDestinatario().getNomeUtente().equalsIgnoreCase(elencoUtenti.get(j).getNomeUtente())){
 						elencoUtenti.get(j).getMessaggiUtente().add(messaggiStato.get(i));
 					}
 				}

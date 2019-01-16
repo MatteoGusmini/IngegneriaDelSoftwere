@@ -97,7 +97,7 @@ public class Evento implements Serializable{
 		
 		// Data odierna per effettuare il confronto
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+		Date date = new Date("11/11/2020");
 		
 		
 		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
@@ -121,7 +121,7 @@ public class Evento implements Serializable{
 		// Controla se è stata superata la data di termine delle iscrizioni senza aver raggiunto il numero minimo di iscritti
 		// Genera dei messaggi in caso affermativo
 		if( ((Date) categoria.getTermineIscrizione().getValore().getValore()).before(date)){
-			if (getPostiLiberi()!=0 && stato.equalsIgnoreCase("Aperta")){
+			if (getPostiLiberi()!=0){
 				stato="Fallita";
 				
 				for (int i=0;i< elencoIscritti.size();i++){

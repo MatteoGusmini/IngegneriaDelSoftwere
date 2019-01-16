@@ -42,7 +42,7 @@ public class Campo implements Serializable{
 			else{
 				switch(valore.getTipo()){
 				case 0:
-					valore.setValore(Utility.leggiStringa("inserisci "+ nome));
+					valore.setValore(Utility.leggiLinea("inserisci "+ nome));
 					break;
 				case 1:
 					valore.setValore(Utility.leggiIntero(0, 9999999, "inserisci "+ nome));
