@@ -97,7 +97,7 @@ public class Evento implements Serializable{
 		
 		// Data odierna per effettuare il confronto
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+		Date date = new Date("12/10/2020");
 		
 		
 		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
@@ -108,18 +108,12 @@ public class Evento implements Serializable{
 				if (getPostiLiberi()==0){
 					stato= "Conclusa";
 				}
-				else{
-					stato="Fallita";
-				}
 			}
 		}
 		else{
 			if( ((Date) categoria.getData().getValore().getValore()).before(date)){
 				if (getPostiLiberi()==0){
 					stato= "Conclusa";
-				}
-				else{
-					stato="Fallita";
 				}
 			}
 		}
