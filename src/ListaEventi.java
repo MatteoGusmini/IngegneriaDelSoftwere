@@ -9,9 +9,9 @@ public class ListaEventi implements Serializable {
 	public ListaEventi()
 	{
 		
-	}
+	} 
 	
-	
+	 
 	// Metodo per il controllo degli eventi
 	public ArrayList<Messaggio> controlloEventi(){
 		ArrayList<Messaggio> messaggi = new ArrayList<>();
