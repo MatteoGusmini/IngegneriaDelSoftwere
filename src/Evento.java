@@ -97,7 +97,7 @@ public class Evento implements Serializable{
 		
 		// Data odierna per effettuare il confronto
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+		Date date = new Date("12/05/2020");
 		
 		
 		ArrayList<Messaggio> messaggiStato = new ArrayList<>();

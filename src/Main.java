@@ -277,7 +277,7 @@ public class Main {
 					}
 					
 					// Scelta eventi
-					int numIscEvento=Utility.leggiIntero(0, categorie.size()+1, SCELTAISCEVENTO);
+					int numIscEvento=Utility.leggiIntero(0, bacheca.getElencoEventi().size() +1, SCELTAISCEVENTO);
 					
 					if (numIscEvento!=0){
 						bacheca.getElencoEventi().get(numIscEvento-1).getElencoIscritti().add(elencoUtenti.get(numUtente));
