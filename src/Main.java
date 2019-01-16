@@ -203,7 +203,7 @@ public class Main {
 							System.out.println(NOME + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getNome());
 						}
 					
-					
+					// Scelta evento da pubblicare
 					int numEventoPubblicato=Utility.leggiIntero(0, elencoUtenti.get(numUtente).getEventiUtente().size(), SCELTAEVENTOPUBBLICAZIONE);
 					
 					
@@ -262,7 +262,8 @@ public class Main {
 				// Partecipa a evento
 				
 				if(bacheca.getElencoEventi().size() != 0){
-
+					// Visualizzazione eventi presenti in bacheca
+					
 					System.out.println("0) Esci");
 					for(int i=0; i<bacheca.getElencoEventi().size();i++){
 						
@@ -274,6 +275,8 @@ public class Main {
 						}
 					
 					}
+					
+					// Scelta eventi
 					int numIscEvento=Utility.leggiIntero(0, categorie.size()+1, SCELTAISCEVENTO);
 					
 					if (numIscEvento!=0){
@@ -320,7 +323,9 @@ public class Main {
 								break;
 							
 							case 2:
+								// Eliminazione messaggi
 								
+								// Visualizzazione dei miei Messagi
 								if(elencoUtenti.get(numUtente).getMessaggiUtente().size()!=0){
 									System.out.println("0) Esci");
 									for(int i=0; i<elencoUtenti.get(numUtente).getMessaggiUtente().size();i++){
@@ -328,6 +333,7 @@ public class Main {
 										System.out.println(elencoUtenti.get(numUtente).getMessaggiUtente().get(i).getTesto());
 									}
 									
+									// Scelta messaggio da eliminare
 									int numMsg=Utility.leggiIntero(0, elencoUtenti.get(numUtente).getMessaggiUtente().size(), SCELTAMSG);
 									
 									
