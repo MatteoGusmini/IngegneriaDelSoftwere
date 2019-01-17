@@ -38,6 +38,11 @@ public class Categoria implements Serializable{
 	public Categoria(String _nome, String _descrizione){
 		nome=_nome;
 		descrizione= _descrizione;
+	}
+
+	//Metodi
+	
+	public void creaArray(){
 		elencoCampi.add(titolo);
 		elencoCampi.add(nPartecipanti);
 		elencoCampi.add(termineIscrizione);
@@ -51,10 +56,6 @@ public class Categoria implements Serializable{
 		elencoCampi.add(oraFine);
 		elencoCampi.add(note);
 	}
-
-	//Metodi
-	
-	
 	
 	//Metodo che permette di inserire i valori ai campi comuni a tutte le categorie
 	public void inserisciCampi()throws Exception{

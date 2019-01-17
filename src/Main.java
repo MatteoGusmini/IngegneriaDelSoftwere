@@ -157,21 +157,9 @@ public class Main {
 				Evento evento= new Evento(partita,elencoUtenti.get(numUtente));
 				evento.inserisciDettagliEvento();
 				
-				if(evento.controlloDate()){
-					evento.getElencoIscritti().add(elencoUtenti.get(numUtente));
-					elencoUtenti.get(numUtente).getEventiUtente().add(evento);
-					System.out.println(MSGEVENTO);
-				}
-				else{
-					// Cancellazione date sbagliate
-					evento.getCategoria().getData().getValore().removeValore();
-					evento.getCategoria().getDataFine().getValore().removeValore();
-					evento.getCategoria().getTermineIscrizione().getValore().removeValore();
-					
-					evento.getElencoIscritti().add(elencoUtenti.get(numUtente));
-					elencoUtenti.get(numUtente).getEventiUtente().add(evento);
-					System.out.println(MSGPROBDATE);
-				}
+				evento.getElencoIscritti().add(elencoUtenti.get(numUtente));
+				elencoUtenti.get(numUtente).getEventiUtente().add(evento);
+				System.out.println(MSGEVENTO);
 				
 				
 				// Salvataggio file
@@ -226,15 +214,23 @@ public class Main {
 											
 							Evento eventop = elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1);
 											
-							if(eventop.controlloDate()){
+							
 								eventop.isValido();
 								// Controllo validità evento
 									if(eventop.getValidità() == true){
-										System.out.println(VALIDITAPUBBLICAZIONE);
+										if(eventop.controlloDate()){
+											System.out.println(VALIDITAPUBBLICAZIONE);
 															
-										// Pubblicazione evento
-										bacheca.getElencoEventi().add(eventop);
-										elencoUtenti.get(numUtente).getEventiUtente().remove(numEventoPubblicato-1);
+											// Pubblicazione evento
+											bacheca.getElencoEventi().add(eventop);
+											elencoUtenti.get(numUtente).getEventiUtente().remove(numEventoPubblicato-1);
+										}
+										else{
+											elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getData().getValore().removeValore();
+											elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getDataFine().getValore().removeValore();
+											elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getTermineIscrizione().getValore().removeValore();													
+											System.out.println(MSGPROBDATE);
+											}
 									}
 									else{
 															
@@ -248,17 +244,9 @@ public class Main {
 										}					
 								}
 							}
-							else{
-								elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getData().getValore().removeValore();
-								elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getDataFine().getValore().removeValore();
-								elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getTermineIscrizione().getValore().removeValore();
-													
-									System.out.println(MSGPROBDATE);
-											
-								}
+							
 						ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 						ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
-						}
 				}
 				else {
 					System.out.println(EVENTIVUOTI);

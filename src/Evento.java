@@ -73,26 +73,19 @@ public class Evento implements Serializable{
 	// Controlla che le date siano inserite in maniera coerente con il loro significato
 	public Boolean controlloDate() {
 		Boolean valido= true;
-		Date termIsc= new Date();
-		Date dataEv= new Date();
-		Date dataConc= new Date();
-		Boolean insTermIsc=categoria.getTermineIscrizione().getValore().getInserito();
-		Boolean insDataEv= categoria.getData().getValore().getInserito();
-		Boolean insDataConc=categoria.getDataFine().getValore().getInserito();
-		
-		if(insDataEv){
-			dataEv=(Date) categoria.getData().getValore().getValore();
+		Date termIsc= (Date) categoria.getTermineIscrizione().getValore().getValore();
+		Date dataEv= (Date) categoria.getData().getValore().getValore();
+		if(categoria.getDataFine().getValore().getInserito()){
+			Date dataConc= (Date) categoria.getDataFine().getValore().getValore();;			
+			if(termIsc.after(dataEv)||termIsc.after(dataConc)||dataEv.after(dataConc)){
+				valido=false;
+			}
 		}
-		if(insDataConc){
-			dataConc=(Date) categoria.getDataFine().getValore().getValore();
+		else{
+			if(termIsc.after(dataEv))
+				valido=false;
 		}
-		if(insTermIsc){
-			termIsc=(Date) categoria.getTermineIscrizione().getValore().getValore();
-		}
-		if(termIsc.after(dataEv)||termIsc.after(dataConc)||dataEv.after(dataConc)){
-			valido=false;
-		}
-		
+				
 		return valido;
 	}
 	

@@ -16,9 +16,28 @@ public class Partita extends Categoria {
 		super("Partita di Calcio","Evento sportivo che prevede un match di 90 minuti");
 		elencoCampi.add(genere);
 		elencoCampi.add(fasciaEta);
+		creaArray();
 	}
 
 	
+	
+	public void creaArray(){
+		
+		elencoCampi.add(super.getTitolo());
+		elencoCampi.add(super.getnPartecipanti());
+		elencoCampi.add(super.getTermineIscrizione());
+		elencoCampi.add(super.getLuogo());
+		elencoCampi.add(super.getData());
+		elencoCampi.add(super.getOra());
+		elencoCampi.add(super.getDurata());
+		elencoCampi.add(super.getQuotaIndividuale());
+		elencoCampi.add(super.getCompresoQuota());
+		elencoCampi.add(super.getDataFine());
+		elencoCampi.add(super.getOraFine());
+		elencoCampi.add(super.getNote());
+		elencoCampi.add(genere);
+		elencoCampi.add(fasciaEta);
+	}
 	
 	//Metodo che visualizza tutti i campi della categoria partita
     public void visualizzaCampi(){
