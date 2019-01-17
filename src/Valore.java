@@ -23,6 +23,11 @@ public class Valore implements Serializable{
 	
 	
 	
+	public void removeValore(){
+		inserito=false;
+	}
+	
+	
 	// Getters and Setters 
 	public Object getValore() {
 		switch(tipo){

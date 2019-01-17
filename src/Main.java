@@ -40,7 +40,8 @@ public class Main {
 		final String BACHECAVUOTA = "Non vi sono eventi validi pubblicati.";
 		final String EVENTIVUOTI = "Non ci sono eventi creati e non acora pubblicati in bacheca.";
 		final String MESSAGGIVUOTI = "Non ci sono messaggi.";
-		final String path="C:\\Progetto\\Evento1";
+		final String MSGEVENTO="Evento creato con successo";
+		final String MSGPROBDATE="Le date non sono in ordine logico. DATE CANCELLATE";
 		
 		
 		// Creazione file per il salvataggio dei dati
@@ -107,12 +108,13 @@ public class Main {
 					}
 				}
 			}
+			
 			ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 			
 			
-			// Eliminazione eventi Falliti
+			// Eliminazione eventi Falliti, Chiusi, Conclusi
 			for(int i=0; i< bacheca.getElencoEventi().size();i++){
-				if(bacheca.getElencoEventi().get(i).getStato().equalsIgnoreCase("Fallita")){
+				if(!bacheca.getElencoEventi().get(i).getStato().equalsIgnoreCase("Aperta") ){
 					bacheca.getElencoEventi().remove(i);
 				}
 			}
@@ -155,8 +157,21 @@ public class Main {
 				Evento evento= new Evento(partita,elencoUtenti.get(numUtente));
 				evento.inserisciDettagliEvento();
 				
-				evento.getElencoIscritti().add(elencoUtenti.get(numUtente));
-				elencoUtenti.get(numUtente).getEventiUtente().add(evento);
+				if(evento.controlloDate()){
+					evento.getElencoIscritti().add(elencoUtenti.get(numUtente));
+					elencoUtenti.get(numUtente).getEventiUtente().add(evento);
+					System.out.println(MSGEVENTO);
+				}
+				else{
+					// Cancellazione date sbagliate
+					evento.getCategoria().getData().getValore().removeValore();
+					evento.getCategoria().getDataFine().getValore().removeValore();
+					evento.getCategoria().getTermineIscrizione().getValore().removeValore();
+					
+					evento.getElencoIscritti().add(elencoUtenti.get(numUtente));
+					elencoUtenti.get(numUtente).getEventiUtente().add(evento);
+					System.out.println(MSGPROBDATE);
+				}
 				
 				
 				// Salvataggio file
@@ -191,51 +206,61 @@ public class Main {
 				
 				// Visualizza i propri eventi non ancora inseriti
 				if(elencoUtenti.get(numUtente).getEventiUtente().size()!=0){
-					System.out.println("0) Esci");	
+						System.out.println("0) Esci");	
 						for(int i=0; i<elencoUtenti.get(numUtente).getEventiUtente().size();i++){
-							System.out.println(i +1 +")");
-							if (elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getInserito()){
-								System.out.println(NOMEEVENTO + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getValore() );	
+								System.out.println(i +1 +")");
+								if (elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getInserito()){
+									System.out.println(NOMEEVENTO + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getTitolo().getValore().getValore() );	
+								}
+								else {
+									System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
+								}
+								System.out.println(NOME + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getNome());
+						}
+											
+											// Scelta evento da pubblicare
+						int numEventoPubblicato=Utility.leggiIntero(0, elencoUtenti.get(numUtente).getEventiUtente().size(), SCELTAEVENTOPUBBLICAZIONE);
+											
+											
+						if(numEventoPubblicato!=0){
+											
+							Evento eventop = elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1);
+											
+							if(eventop.controlloDate()){
+								eventop.isValido();
+								// Controllo validità evento
+									if(eventop.getValidità() == true){
+										System.out.println(VALIDITAPUBBLICAZIONE);
+															
+										// Pubblicazione evento
+										bacheca.getElencoEventi().add(eventop);
+										elencoUtenti.get(numUtente).getEventiUtente().remove(numEventoPubblicato-1);
+									}
+									else{
+															
+									    // Evento non valido
+										System.out.println(NONVALIDITAPUBBLICAZIONE);
+															
+										// Possibilità di inserire altri dettagli all'evento
+										int inserimento= Utility.leggiIntero(0,1, "Vuoi inserire completare l'evento? Digita 1 per SI e 0 pre NO");
+										if (inserimento==1){
+											eventop.inserisciDettagliEvento();
+										}					
+								}
 							}
-							else {
-								System.out.println(NOMEEVENTO + "Titolo non ancora inserito");
-							}
-							System.out.println(NOME + elencoUtenti.get(numUtente).getEventiUtente().get(i).getCategoria().getNome());
-						}
-					
-					// Scelta evento da pubblicare
-					int numEventoPubblicato=Utility.leggiIntero(0, elencoUtenti.get(numUtente).getEventiUtente().size(), SCELTAEVENTOPUBBLICAZIONE);
-					
-					
-					if(numEventoPubblicato!=0){
-					
-						Evento eventop = elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1);
-						
-						eventop.isValido();
-					// Controllo validità evento
-						if(eventop.getValidità() == true){
-							System.out.println(VALIDITAPUBBLICAZIONE);
-							
-							// Pubblicazione evento
-							bacheca.getElencoEventi().add(eventop);
-							elencoUtenti.get(numUtente).getEventiUtente().remove(numEventoPubblicato-1);
-						}
-						else{
-							
-						    // Evento non valido
-							System.out.println(NONVALIDITAPUBBLICAZIONE);
-							
-							// Possibilità di inserire altri dettagli all'evento
-							int inserimento= Utility.leggiIntero(0,1, "Vuoi inserire completare l'evento? Digita 1 per SI e 0 pre NO");
-							if (inserimento==1){
-								eventop.inserisciDettagliEvento();
-							}					
-						}
-						
+							else{
+								elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getData().getValore().removeValore();
+								elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getDataFine().getValore().removeValore();
+								elencoUtenti.get(numUtente).getEventiUtente().get(numEventoPubblicato -1).getCategoria().getTermineIscrizione().getValore().removeValore();
+													
+									System.out.println(MSGPROBDATE);
+											
+								}
 						ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 						ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
-					}
-				}else {
+						}
+				}
+				else {
 					System.out.println(EVENTIVUOTI);
 				}
 				

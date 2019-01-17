@@ -69,6 +69,33 @@ public class Evento implements Serializable{
 		return iscritto;
 	}
 	
+	
+	// Controlla che le date siano inserite in maniera coerente con il loro significato
+	public Boolean controlloDate() {
+		Boolean valido= true;
+		Date termIsc= new Date();
+		Date dataEv= new Date();
+		Date dataConc= new Date();
+		Boolean insTermIsc=categoria.getTermineIscrizione().getValore().getInserito();
+		Boolean insDataEv= categoria.getData().getValore().getInserito();
+		Boolean insDataConc=categoria.getDataFine().getValore().getInserito();
+		
+		if(insDataEv){
+			dataEv=(Date) categoria.getData().getValore().getValore();
+		}
+		if(insDataConc){
+			dataConc=(Date) categoria.getDataFine().getValore().getValore();
+		}
+		if(insTermIsc){
+			termIsc=(Date) categoria.getTermineIscrizione().getValore().getValore();
+		}
+		if(termIsc.after(dataEv)||termIsc.after(dataConc)||dataEv.after(dataConc)){
+			valido=false;
+		}
+		
+		return valido;
+	}
+	
 	// Metodo che controlla se il numero di partecipanti di un evento ha raggiunto il limite e se è vero genere i messaggi
 	public ArrayList<Messaggio> controlloNPartecipanti(){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
