@@ -9,11 +9,14 @@ public class ServizioFile{
 	private final static String MSG_NO_CHIUSURA ="ATTENZIONE: PROBLEMI CON LA CHIUSURA DEL FILE ";
 
 
-	public static int esistenzaFile = 1;
 
-	public static int esistenzaF(){
-		return esistenzaFile;
+	public static int esistenzaFile(File f){
+		if(f.exists())
+			return 1;
+		else
+			return 0;
 	}
+
 	public static Object caricaSingoloOggetto (File f){
 		Object letto = null;
 		ObjectInputStream ingresso = null;
@@ -25,7 +28,6 @@ public class ServizioFile{
 		}
 		catch(FileNotFoundException excNotFound){
 			System.out.println(MSG_NO_FILE + f.getName() );
-			esistenzaFile = 0;
 		}
 		catch(IOException excLettura){
 			System.out.println(MSG_NO_LETTURA + f.getName() );

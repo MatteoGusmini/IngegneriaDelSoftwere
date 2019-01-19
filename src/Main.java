@@ -60,12 +60,12 @@ public class Main {
 		
 		
 		// Caricamento dati del programma
-		if(ServizioFile.esistenzaF() == 0) {
+		if(ServizioFile.esistenzaFile(fileutenti) == 0) {
 			ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
 		}else
 			elencoUtenti=  (ArrayList<Utente>) ServizioFile.caricaSingoloOggetto(fileutenti);
 
-		if(ServizioFile.esistenzaF() == 0) {
+		if(ServizioFile.esistenzaFile(filebacheca) == 0) {
 			ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
 		}else
 			bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
