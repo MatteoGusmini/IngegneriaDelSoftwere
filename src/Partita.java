@@ -14,8 +14,6 @@ public class Partita extends Categoria {
 	
 	public Partita(){
 		super("Partita di Calcio","Evento sportivo che prevede un match di 90 minuti");
-		elencoCampi.add(genere);
-		elencoCampi.add(fasciaEta);
 		creaArray();
 	}
 

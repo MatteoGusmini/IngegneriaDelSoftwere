@@ -245,14 +245,14 @@ public class Main {
 								}
 							}
 							
-						ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
-						ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
+						
 				}
 				else {
 					System.out.println(EVENTIVUOTI);
 				}
 				
-				
+				ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
+				ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
 				break;
 			case 5:
 				// Visualizza Bacheca
