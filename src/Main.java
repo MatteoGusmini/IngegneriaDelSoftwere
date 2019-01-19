@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-import MyLib.Menù;
+import MyLib.Menu;
 import MyLib.ServizioFile;
 import MyLib.Utility;
 
@@ -59,6 +59,8 @@ public class Main {
 		
 		
 		// Caricamento dati del programma
+		ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
+		ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
 		bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
 		elencoUtenti=  (ArrayList<Utente>) ServizioFile.caricaSingoloOggetto(fileutenti);
 		
@@ -91,7 +93,7 @@ public class Main {
 		categorie.add(partita);
 		
 		
-		Menù myMenu= new Menù(NOMEMENU,OPZIONI);
+		Menu myMenu= new Menu(NOMEMENU,OPZIONI);
 		int scelta;
 		
 		
@@ -216,8 +218,8 @@ public class Main {
 											
 							
 								eventop.isValido();
-								// Controllo validità evento
-									if(eventop.getValidità() == true){
+								// Controllo validita evento
+									if(eventop.getvalidita() == true){
 										if(eventop.controlloDate()){
 											System.out.println(VALIDITAPUBBLICAZIONE);
 															
@@ -310,7 +312,7 @@ public class Main {
 				
 			case 7:
 				// Visualiza i miei messaggi
-				Menù Menumsg= new Menù(NOMEMENUMSG,OPZIONIMSG);
+				Menu Menumsg= new Menu(NOMEMENUMSG,OPZIONIMSG);
 				int sceltamsg;
 				
 					do{

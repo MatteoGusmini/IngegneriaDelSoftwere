@@ -1,6 +1,6 @@
 package MyLib;
 
-public class Menù 
+public class Menu 
 {
 	final private static String CORNICE = "******************************************";
 	final private static String VOCE_USCITA = "0 - Esci";
@@ -8,7 +8,7 @@ public class Menù
 	"Digita il numero dell'opzione desiderata";
 	private String titolo;
 	private String [] voci;
-	public Menù (String _titolo, String [] _voci)
+	public Menu (String _titolo, String [] _voci)
 	{
 	titolo = _titolo;
 	voci = _voci;
@@ -33,3 +33,4 @@ public class Menù
 	System.out.println();
 	}
 }
+

@@ -16,7 +16,7 @@ public class Evento implements Serializable{
 	
 	//Attributi
 	private Categoria categoria;
-	private Boolean validità;
+	private Boolean validita;
 	private Utente creatore;
 	private ArrayList <Utente> elencoIscritti = new ArrayList<>();
 	private String stato;
@@ -26,7 +26,7 @@ public class Evento implements Serializable{
 	public Evento(Categoria _categoria, Utente _creatore){
 		categoria= _categoria;
 		creatore=_creatore;
-		validità = false;
+		validita = false;
 		stato= "Aperta";
 	}
 	
@@ -37,11 +37,11 @@ public class Evento implements Serializable{
 	
 	//Metodo che verifica che tutti i campi obbligatori abbiano inserito un valore
 	public void isValido(){
-		validità=true;
+		validita=true;
 		
 		for (int i=0; i<categoria.getElencoCampi().size(); i++){
 			if(categoria.getElencoCampi().get(i).getObbligatorio()&& !categoria.getElencoCampi().get(i).getValore().getInserito()){
-				validità=false;
+				validita=false;
 			}
 		}
 		
@@ -117,7 +117,7 @@ public class Evento implements Serializable{
 		
 		// Data odierna per effettuare il confronto
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+		Date date = new Date("22/02/2021");
 		
 		
 		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
@@ -178,8 +178,8 @@ public class Evento implements Serializable{
 
 	
 
-	public Boolean getValidità() {
-		return validità;
+	public Boolean getvalidita() {
+		return validita;
 	}
 
 
@@ -197,8 +197,8 @@ public class Evento implements Serializable{
 
 
 
-	public void setValidità(Boolean validità) {
-		this.validità = validità;
+	public void setvalidita(Boolean validita) {
+		this.validita = validita;
 	}
 	
 
