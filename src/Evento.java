@@ -10,8 +10,8 @@ public class Evento implements Serializable{
 	
 	
 	
-	final String[] TESTOCHIUSURA={"L'evento "," ha raggiunto un numero sufficiente di iscrizioni e si terra dunque in data "," alle ore "," presso ",". Si ricorda che è necessatrio versare la quota di iscrizione di "," Euro."};
-	final String[] TESTOFALLITO={"L'evento "," NON ha raggiunto un numero sufficiente di iscrizioni ed è quindi stato cancellato."};
+	final String[] TESTOCHIUSURA={"L'evento "," ha raggiunto un numero sufficiente di iscrizioni e si terra dunque in data "," alle ore "," presso ",". Si ricorda che ï¿½ necessatrio versare la quota di iscrizione di "," Euro."};
+	final String[] TESTOFALLITO={"L'evento "," NON ha raggiunto un numero sufficiente di iscrizioni ed ï¿½ quindi stato cancellato."};
 	
 	
 	//Attributi
@@ -55,8 +55,8 @@ public class Evento implements Serializable{
 	
 	
 	
-	// Metodo che controlla se un utente è già iscritto ad un evento
-	public Boolean giàIscritto(Utente utente) {
+	// Metodo che controlla se un utente ï¿½ giï¿½ iscritto ad un evento
+	public Boolean giaIscritto(Utente utente) {
 		Boolean iscritto= false;
 		
 		for(int i=0; i< elencoIscritti.size(); i++){
@@ -89,7 +89,7 @@ public class Evento implements Serializable{
 		return valido;
 	}
 	
-	// Metodo che controlla se il numero di partecipanti di un evento ha raggiunto il limite e se è vero genere i messaggi
+	// Metodo che controlla se il numero di partecipanti di un evento ha raggiunto il limite e se ï¿½ vero genere i messaggi
 	public ArrayList<Messaggio> controlloNPartecipanti(){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
@@ -112,7 +112,7 @@ public class Evento implements Serializable{
 		
 	}
 	
-	// Metodo che controlla se si è superata la dta di termine iscrizione o quella di svolgimento dell'evento
+	// Metodo che controlla se si ï¿½ superata la dta di termine iscrizione o quella di svolgimento dell'evento
 	public ArrayList<Messaggio> controlloData(){
 		
 		// Data odierna per effettuare il confronto
@@ -122,7 +122,7 @@ public class Evento implements Serializable{
 		
 		ArrayList<Messaggio> messaggiStato = new ArrayList<>();
 		
-		// Verifica se è stata passata la data conclusiva dell'evento (nel caso sia inserita)o la data dell'evento
+		// Verifica se ï¿½ stata passata la data conclusiva dell'evento (nel caso sia inserita)o la data dell'evento
 		if(categoria.getDataFine().getValore().getInserito()){
 			if( ((Date) categoria.getDataFine().getValore().getValore()).before(date)){
 				if (getPostiLiberi()==0){
@@ -138,7 +138,7 @@ public class Evento implements Serializable{
 			}
 		}
 		
-		// Controla se è stata superata la data di termine delle iscrizioni senza aver raggiunto il numero minimo di iscritti
+		// Controla se ï¿½ stata superata la data di termine delle iscrizioni senza aver raggiunto il numero minimo di iscritti
 		// Genera dei messaggi in caso affermativo
 		if( ((Date) categoria.getTermineIscrizione().getValore().getValore()).before(date)){
 			if (getPostiLiberi()!=0){
