@@ -54,15 +54,22 @@ public class Main {
 		ArrayList<Categoria> categorie=new ArrayList<>();
 		ListaEventi bacheca = new ListaEventi();
 		ArrayList<Utente> elencoUtenti=new ArrayList<>();
+
 		
 		
 		
 		
 		// Caricamento dati del programma
-		ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
-		ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
-		bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
-		elencoUtenti=  (ArrayList<Utente>) ServizioFile.caricaSingoloOggetto(fileutenti);
+		if(ServizioFile.esistenzaF() == 0) {
+			ServizioFile.salvaSingoloOggetto(fileutenti, elencoUtenti);
+		}else
+			elencoUtenti=  (ArrayList<Utente>) ServizioFile.caricaSingoloOggetto(fileutenti);
+
+		if(ServizioFile.esistenzaF() == 0) {
+			ServizioFile.salvaSingoloOggetto(filebacheca, bacheca);
+		}else
+			bacheca= (ListaEventi) ServizioFile.caricaSingoloOggetto(filebacheca);
+
 		
 		
 		

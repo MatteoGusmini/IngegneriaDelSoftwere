@@ -7,7 +7,13 @@ public class ServizioFile{
 	private final static String MSG_NO_LETTURA = "ATTENZIONE: PROBLEMI CON LA LETTURA DEL FILE ";
 	private final static String MSG_NO_SCRITTURA = "ATTENZIONE: PROBLEMI CON LA SCRITTURA DEL FILE ";
 	private final static String MSG_NO_CHIUSURA ="ATTENZIONE: PROBLEMI CON LA CHIUSURA DEL FILE ";
-  	
+
+
+	public static int esistenzaFile = 1;
+
+	public static int esistenzaF(){
+		return esistenzaFile;
+	}
 	public static Object caricaSingoloOggetto (File f){
 		Object letto = null;
 		ObjectInputStream ingresso = null;
@@ -19,6 +25,7 @@ public class ServizioFile{
 		}
 		catch(FileNotFoundException excNotFound){
 			System.out.println(MSG_NO_FILE + f.getName() );
+			esistenzaFile = 0;
 		}
 		catch(IOException excLettura){
 			System.out.println(MSG_NO_LETTURA + f.getName() );
@@ -137,17 +144,17 @@ public class ServizioFile{
 	    if (!f.exists())
 	      throw new IllegalArgumentException("Il File o la Directory non esiste: " + path);
 
-	    // Se è una cartella verifico che sia vuota
+	    // Se ï¿½ una cartella verifico che sia vuota
 	    if (f.isDirectory()) {
 	      String[] files = f.list();
 	      if (files.length > 0)
-	        throw new IllegalArgumentException("La Directory non è vuota: " + path);
+	        throw new IllegalArgumentException("La Directory non ï¿½ vuota: " + path);
 	    }
 
 	    // Provo a cancellare
 	    boolean success = f.delete();
 
-	     // Se si è verificato un errore...
+	     // Se si ï¿½ verificato un errore...
 	    if (!success)
 	      throw new IllegalArgumentException("Cancellazione fallita");
 	  }
